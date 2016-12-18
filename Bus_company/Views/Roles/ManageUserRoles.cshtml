@@ -1,0 +1,123 @@
+﻿@{
+    ViewBag.Title = "Менеджер ролей";
+}
+<style>
+    h2 span {
+        color: white;
+        font: bold 24px/45px Helvetica, Sans-Serif;
+        letter-spacing: -1px;
+        background: rgb(0, 0, 0); /* на случай, если следующая строка не сработает */
+        background: rgba(0, 0, 0, 0.7);
+        padding: 10px;
+    }
+
+    .container {
+        margin: 30px auto;
+        width: 25%;
+        height: 100%;
+    }
+</style>
+
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header
+            mdl-layout--fixed-tabs">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+            <!-- Title -->
+            <span class="mdl-layout-title ">BUSТранзит</span>
+            <div class="mdl-layout-spacer"></div>
+            <nav class="mdl-navigation">
+                <div>
+                    @Html.Partial("_LoginPartial")
+
+                </div>
+            </nav>
+        </div>
+        <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+            @Html.ActionLink("Главная", "Index", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+            @Html.ActionLink("Транспорт", "Bus", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+            @Html.ActionLink("Рейсы", "Index", "Timetables", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+            @if (User.IsInRole("admin"))
+            {@Html.ActionLink("Сотрудники и роли", "Employee", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue is-active" })}
+            @Html.ActionLink("О компании", "Company", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+        </div>
+    </header>
+
+    <main class="mdl-layout__content">
+        <section class="mdl-layout__tab-panel is-active" id="tab-4">
+
+            <div class="page-content">
+                <div class="container">
+                    <center>
+                        <h2><span>Менеджер ролей</span></h2>
+                        <hr />
+                        @Html.ActionLink("Список ролей", "Index", "Roles", null, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" })
+                        <hr />
+                        <br />
+                        <h2><span>Добавить роль для пользователя</span></h2>
+                        @using (Html.BeginForm("RoleAddToUser", "Roles"))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true)
+                            <p>
+                                <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    @Html.DropDownList("UserName", (IEnumerable<SelectListItem>)ViewBag.Users, "Почта", new { @class = "form-control mdl-textfield__input" })
+                                    <br />
+                                    @Html.DropDownList("RoleName", (IEnumerable<SelectListItem>)ViewBag.Roles, "Роль", new { @class = "form-control mdl-textfield__input" })
+                                </div>
+                            </p>
+                            <input type="submit" value="Сохранить" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
+                        }
+                        <br />
+
+                        <h2><span>Узнать роль пользователя</span></h2>
+                        @using (Html.BeginForm("GetRoles", "Roles"))
+                        {
+                            @Html.AntiForgeryToken()
+                            <p>
+                                <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    @Html.DropDownList("UserName", (IEnumerable<SelectListItem>)ViewBag.Users, "Почта", new { @class = "form-control mdl-textfield__input" })
+                                </div>
+                                <br />
+                                <input type="submit" value="Вывести" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
+                            </p>
+                        }
+
+                        @if (ViewBag.RolesForThisUser != null)
+                        {
+                            <div style="background-color:papayawhip;">
+                                <h3>Роли пользователя </h3>
+                                <ol>
+                                    @foreach (string s in ViewBag.RolesForThisUser)
+                                    {
+                                        <li>@s</li>
+                                    }
+                                </ol>
+                            </div>
+                        }
+                        <br />
+                        <h2><span>Удаление роли у пользователя</span></h2>
+
+
+                        @using (Html.BeginForm("DeleteRoleForUser", "Roles"))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true)
+
+                            <p>
+                                <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    @Html.DropDownList("UserName", (IEnumerable<SelectListItem>)ViewBag.Users, "Почта", new { @class = "form-control mdl-textfield__input" })
+                                    <br/>
+                                    @Html.DropDownList("RoleName", (IEnumerable<SelectListItem>)ViewBag.Roles, "Роль", new { @class = "form-control mdl-textfield__input" })
+                                </div>
+                            </p>
+                            <div class="navbar-right">
+                                <input type="submit" value="Удалить" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
+                            </div>
+                        }
+                    </center>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+

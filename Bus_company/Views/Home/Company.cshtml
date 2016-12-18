@@ -1,0 +1,65 @@
+﻿<style>
+    h2 span {
+        color: white;
+        font: bold 24px/45px Helvetica, Sans-Serif;
+        letter-spacing: -1px;
+        background: rgb(0, 0, 0); /* на случай, если следующая строка не сработает */
+        background: rgba(0, 0, 0, 0.7);
+        padding: 10px;
+    }
+
+    .container {
+        margin: 30px auto;
+        width: 70%;
+        height: 100%;
+    }
+</style>
+
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header
+            mdl-layout--fixed-tabs">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+            <!-- Title -->
+            <span class="mdl-layout-title ">BUSТранзит</span>
+            <div class="mdl-layout-spacer"></div>
+            <nav class="mdl-navigation">
+                <div>
+                    @Html.Partial("_LoginPartial")
+
+                </div>
+            </nav>
+        </div>
+        <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+            @Html.ActionLink("Главная", "Index", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+            @Html.ActionLink("Транспорт", "Bus", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+            @Html.ActionLink("Рейсы", "Index", "Timetables", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+            @if (User.IsInRole("admin"))
+            {@Html.ActionLink("Сотрудники и роли", "Employee", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })}
+            <a href="#tab-5" class="mdl-layout__tab mdl-color--white mdl-color-text--blue is-active">О компании</a>
+        </div>
+    </header>
+
+    <main class="mdl-layout__content">
+        <section class="mdl-layout__tab-panel is-active" id="tab-5">
+
+            <div class="page-content">
+                <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?sid=DuIsPMdJQ1lTT4lPL5js8E5XrSwoVExv&amp;width=100%25&amp;height=400&amp;lang=ru_RU&amp;sourceType=constructor&amp;scroll=true"></script>
+                <div class="container">   
+                    <center>
+                        <h2><span>"BUSТранзит"</span></h2>
+                       
+                        <h4>
+                            <b>Адрес:</b>Владимир, 600021,ул. Куйбышева, 30Б.<br />
+                            <b>Время работы офиса:</b>понедельник - пятница, с 8:45 по 17:30 (обед 12:20 - 13:00).<br />
+                            <b>Телефон:</b>+7 4922 77–83–00<br />
+                            <b>Бухгалтерия:</b>+7 4922 77–84–00<br />
+                            <b>Электронная почта:</b>perevozki33@mail.ru<br />
+                            <b>Реквизиты:</b> ИНН 3327847351, ОГРН 1103327000908<br />
+                            <b>Банковские реквизиты:</b>ЗАО «Владбизнесбанк» г. Владимир<br />
+                        </h4>
+                    </center>    
+                </div>
+            </div>
+        </section>
+    </main>
+</div>

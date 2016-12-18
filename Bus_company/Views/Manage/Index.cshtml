@@ -1,0 +1,166 @@
+﻿@model Bus_company.Models.IndexViewModel
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Manage";
+}
+
+<style>
+    h2 span {
+        color: white;
+        font: bold 24px/45px Helvetica, Sans-Serif;
+        letter-spacing: -1px;
+        background: rgb(0, 0, 0); /* на случай, если следующая строка не сработает */
+        background: rgba(0, 0, 0, 0.7);
+        padding: 10px;
+    }
+
+    .container {
+        margin: 30px auto;
+        width: 35%;
+        height: 100%;
+    }
+</style>
+
+
+
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header
+            mdl-layout--fixed-tabs">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+            <!-- Title -->
+            <span class="mdl-layout-title ">BUSТранзит</span>
+            <div class="mdl-layout-spacer"></div>
+            <nav class="mdl-navigation">
+                <div>
+                    @Html.Partial("_LoginPartial")
+
+                </div>
+            </nav>
+        </div>
+        <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+            @Html.ActionLink("Главная", "Index", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+            @Html.ActionLink("Транспорт", "Bus", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+            @Html.ActionLink("Рейсы", "Index", "Timetables", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+            @if (User.IsInRole("admin"))
+            {@Html.ActionLink("Сотрудники и роли", "Employee", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })}
+            @Html.ActionLink("О компании", "Company", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+        </div>
+    </header>
+
+    <!-- Tabs -->
+
+    <main class="mdl-layout__content">
+        <section class="mdl-layout__tab-panel is-active" id="tab-1">
+
+            <div class="page-content">
+                <div class="container">
+                    
+
+                    <center><h2><span>Профиль</span></h2></center>
+                    <br/>
+                        <p class="text-success">@ViewBag.StatusMessage</p>
+                        <div>
+                            <h4>Данные профиля</h4>
+                            <hr />
+                            <h5>Имя: @ViewBag.users.Name </h5>
+
+                            <h5>Фамилия: @ViewBag.users.Surname</h5>
+
+                            <h5>Почта: @ViewBag.users.Email</h5>
+                            <h5>
+                                Изменить пароль:
+
+
+                                @if (Model.HasPassword)
+                                {
+                                    @Html.ActionLink("Изменить", "ChangePassword", null, null, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" })
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Создать", "SetPassword", null, null, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" })
+                                }
+                            </h5>
+                            <br/>
+                            <center>
+                                @if (User.IsInRole("user"))
+                                {
+                                    <h2><span>Ваши заказы</span></h2>
+
+                                    foreach (var item in ViewBag.orders)
+                                    {
+                                        
+                                        <br />
+                                        <p>Дата вашего заказа: @item.Date</p>
+                                        <p>Сумма вашего заказа: @item.Money Р</p>
+                                        <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                                            <thead>
+                                                <tr>
+                                                    <th class="mdl-data-table__cell--non-numeric" />
+                                                    <th>
+                                                        <center>
+                                                            Выезд
+                                                        </center>
+                                                    </th>
+                                                    <th>
+                                                        <center>
+                                                            Откуда
+                                                        </center>
+                                                    </th>
+                                                    <th>
+                                                        <center>
+                                                            Куда
+                                                        </center>
+                                                    </th>
+                                                    <th>
+                                                        <center>
+                                                            В пути
+                                                        </center>
+                                                    </th>
+                                                    <th>
+                                                        <center>
+                                                            Автобус
+                                                        </center>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="mdl-data-table__cell--non-numeric">
+                                                        <img src="@item.Timetable.Bus1.Preview" width="90" height="65">
+                                                    </td>
+                                                    <td>
+                                                        @item.Timetable.DateTime
+                                                    </td>
+                                                    <td>
+                                                        @item.Timetable.Trip1.begin
+                                                    </td>
+                                                    <td>
+                                                        @item.Timetable.Trip1.end
+                                                    </td>
+                                                    <td>
+                                                        <center>
+                                                            @item.Timetable.Trip1.length
+                                                            км
+                                                            <br />
+                                                            @item.Timetable.Trip1.time
+                                                            ч
+                                                        </center>
+                                                    </td>
+                                                    <td>
+                                                        <center>
+                                                            @item.Timetable.Bus1.Model
+                                                        </center>
+                                                    </td>
+                                        </table>
+                                        <br />
+                                        <hr />
+                                    }
+
+                                }
+                            </center>               
+                    </div>                  
+                </div>
+            </div>
+        </section>
+    </main>
+</div>

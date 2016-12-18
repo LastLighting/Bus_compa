@@ -1,0 +1,81 @@
+﻿@model Microsoft.AspNet.Identity.EntityFramework.IdentityRole
+@{
+    ViewBag.Title = "Изменение роли";
+}
+
+<style>
+    h2 span {
+        color: white;
+        font: bold 24px/45px Helvetica, Sans-Serif;
+        letter-spacing: -1px;
+        background: rgb(0, 0, 0); /* на случай, если следующая строка не сработает */
+        background: rgba(0, 0, 0, 0.7);
+        padding: 10px;
+    }
+
+    .container {
+        margin: 30px auto;
+        width: 25%;
+        height: 100%;
+    }
+</style>
+
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header
+            mdl-layout--fixed-tabs">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+            <!-- Title -->
+            <span class="mdl-layout-title ">BUSТранзит</span>
+            <div class="mdl-layout-spacer"></div>
+            <nav class="mdl-navigation">
+                <div>
+                    @Html.Partial("_LoginPartial")
+
+                </div>
+            </nav>
+        </div>
+        <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+            @Html.ActionLink("Главная", "Index", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+            @Html.ActionLink("Транспорт", "Bus", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+            @Html.ActionLink("Рейсы", "Index", "Timetables", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+            @if (User.IsInRole("admin"))
+            {@Html.ActionLink("Сотрудники и роли", "Employee", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue is-active" })}
+            @Html.ActionLink("О компании", "Company", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+        </div>
+    </header>
+
+    <main class="mdl-layout__content">
+        <section class="mdl-layout__tab-panel is-active" id="tab-5">
+
+            <div class="page-content">
+                <div class="container">
+                    <h2><span>Изменение роли</span></h2>
+                    <hr />
+                    @Html.ActionLink("Список ролей", "Index", "Roles", null, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" }) 
+                    @Html.ActionLink("Менеджер ролей ", "ManageUserRoles", "Roles", null, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" })
+                    <hr />
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+                        @Html.HiddenFor(model => model.Id)
+                        <div>
+                            <h4>Новое имя роли</h4>
+                        </div>
+                        <p>
+                            <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                @Html.Label("Имя", new { @class = "mdl-textfield__label col-md-2 control-label" })
+                                <div class="col-md-10">
+                                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control mdl-textfield__input" })
+                                </div>
+                            </div>
+                        </p>
+                        <input type="submit" value="Сохранить" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"/>
+                    }
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+

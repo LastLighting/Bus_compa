@@ -3,3 +3,11 @@
 ################################################################################
 
 /packages/Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.1.0/content/ApplicationInsights.config.install.xdt
+/packages/Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.1.0/content
+/Bus_company/bin
+/Bus_company/Content
+/Bus_company/fonts
+/Bus_company/obj/Debug
+/Bus_company/Scripts
+/packages/bootstrap.3.0.0
+/packages

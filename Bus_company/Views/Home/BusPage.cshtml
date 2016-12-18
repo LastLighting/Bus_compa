@@ -1,0 +1,135 @@
+﻿@model Bus_company.Models.Bus
+
+<style>
+    h2 span {
+        color: white;
+        font: bold 24px/45px Helvetica, Sans-Serif;
+        letter-spacing: -1px;
+        background: rgb(0, 0, 0); /* на случай, если следующая строка не сработает */
+        background: rgba(0, 0, 0, 0.7);
+        padding: 10px;
+    }
+
+    .container {
+        margin: 30px auto;
+        width: 25%;
+        height: 100%;
+    }
+</style>
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header
+            mdl-layout--fixed-tabs">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+            <!-- Title -->
+            <span class="mdl-layout-title ">BUSТранзит</span>
+            <div class="mdl-layout-spacer"></div>
+            <nav class="mdl-navigation">
+                <div>
+                    @Html.Partial("_LoginPartial")
+
+                </div>
+            </nav>
+        </div>
+        <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+            @Html.ActionLink("Главная", "Index", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+            @Html.ActionLink("Транспорт", "Bus", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+            @Html.ActionLink("Рейсы", "Index", "Timetables", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+            @if (User.IsInRole("admin"))
+            {@Html.ActionLink("Сотрудники и роли", "Employee", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })}
+            @Html.ActionLink("О компании", "Company", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+        </div>
+    </header>
+
+    <!-- Tabs -->
+
+    <main class="mdl-layout__content">
+        <section class="mdl-layout__tab-panel is-active" id="tab-1">
+
+            <div class="page-content">
+                <div class="container">
+
+                    <h2><span>Изменение</span></h2>
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            <h4>Информация об автобусе номер @Model.Id </h4>
+                            <hr />
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.Id)
+                            <br />
+
+                            <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                @Html.LabelFor(model => model.Model, htmlAttributes: new { @class = "control-label col-md-2 mdl-textfield__label" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Model, new { htmlAttributes = new { @class = "form-control mdl-textfield__input" } })
+                                    @Html.ValidationMessageFor(model => model.Model, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <br />
+                            <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2 mdl-textfield__label" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control mdl-textfield__input" } })
+                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <br />
+                            <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                @Html.LabelFor(model => model.Preview, htmlAttributes: new { @class = "control-label col-md-2 mdl-textfield__label" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Preview, new { htmlAttributes = new { @class = "form-control mdl-textfield__input" } })
+                                    @Html.ValidationMessageFor(model => model.Preview, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <br />
+                            <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                @Html.LabelFor(model => model.Rashod_many, htmlAttributes: new { @class = "control-label col-md-2 mdl-textfield__label" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Rashod_many, new { htmlAttributes = new { @class = "form-control mdl-textfield__input" } })
+                                    @Html.ValidationMessageFor(model => model.Rashod_many, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <br />
+                            <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                @Html.LabelFor(model => model.Rashod_fuel, htmlAttributes: new { @class = "control-label col-md-2 mdl-textfield__label" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Rashod_fuel, new { htmlAttributes = new { @class = "form-control mdl-textfield__input" } })
+                                    @Html.ValidationMessageFor(model => model.Rashod_fuel, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <br />
+                            <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                @Html.LabelFor(model => model.Quantity_of_seats, htmlAttributes: new { @class = "control-label col-md-2 mdl-textfield__label" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Quantity_of_seats, new { htmlAttributes = new { @class = "form-control mdl-textfield__input" } })
+                                    @Html.ValidationMessageFor(model => model.Quantity_of_seats, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <br />
+                            <div>
+                                @Html.ActionLink("назад", "Bus", null, new { @class = "btn btn-default mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" })
+
+                                
+                                   
+                                        <input type="submit" value="Сохранить" class="btn btn-default mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" />
+                                    
+                               
+                            </div>
+                        </div>
+                    }
+
+                    
+
+                    @section Scripts {
+                        @Scripts.Render("~/bundles/jqueryval")
+                    }
+                </div>
+            </div>
+
+
+        </section>
+
+    </main>
+</div>

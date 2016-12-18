@@ -1,0 +1,78 @@
+﻿@model Bus_company.Models.Timetable
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    h2 span {
+        color: white;
+        font: bold 24px/45px Helvetica, Sans-Serif;
+        letter-spacing: -1px;
+        background: rgb(0, 0, 0); /* на случай, если следующая строка не сработает */
+        background: rgba(0, 0, 0, 0.7);
+        padding: 10px;
+    }
+
+    .container {
+        margin: 30px auto;
+        width: 90%;
+        height: 100%;
+    }
+</style>
+
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header
+            mdl-layout--fixed-tabs">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+            <!-- Title -->
+            <span class="mdl-layout-title ">BUSТранзит</span>
+            <div class="mdl-layout-spacer"></div>
+            <nav class="mdl-navigation">
+                <div>
+                    @Html.Partial("_LoginPartial")
+
+                </div>
+            </nav>
+        </div>
+        <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+            @Html.ActionLink("Главная", "Index", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+            @Html.ActionLink("Транспорт", "Bus", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+            @Html.ActionLink("Рейсы", "Index", "Timetables", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue is-active" })
+            @if (User.IsInRole("admin"))
+            {@Html.ActionLink("Сотрудники и роли", "Employee", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue " })}
+            @Html.ActionLink("О компании", "Company", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+        </div>
+    </header>
+
+    <main class="mdl-layout__content">
+        <section class="mdl-layout__tab-panel is-active" id="tab-4">
+
+            <div class="page-content">
+                <div class="container">
+                    <center>
+                        <h2><span>Покупка</span></h2>
+                        <hr />
+                        <br />
+                        <h4>Для оплаты билета требуется ввести номер вашей карты</h4>
+                        @using (Html.BeginForm())
+                        {
+                            <h4></h4>
+                            <h2><span>Стоимость билета состовляет: @Html.DisplayFor(model => model.Price_place)P</span></h2>
+                            <br />
+                            @ViewBag.Web;
+                            <br/>
+                            <h2><span>Введите номер вашей карты:<input type="text" name="idcard"/></span></h2>
+                            <button type="submit" name="summ" value="@Model.Price_place" class="btn btn-default mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Продолжить</button>
+                            @Html.ActionLink("Отмена", "Index", null, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" })                          
+                            @User.Identity.Name 
+                            <br />
+                        }
+                    </center>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+

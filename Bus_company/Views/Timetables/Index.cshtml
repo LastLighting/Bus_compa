@@ -1,0 +1,287 @@
+﻿@model IEnumerable<Bus_company.Models.Timetable>
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    h2 span {
+        color: white;
+        font: bold 24px/45px Helvetica, Sans-Serif;
+        letter-spacing: -1px;
+        background: rgb(0, 0, 0); /* на случай, если следующая строка не сработает */
+        background: rgba(0, 0, 0, 0.7);
+        padding: 10px;
+    }
+
+    .container {
+        margin: 30px auto;
+        width: 90%;
+        height: 100%;
+    }
+</style>
+
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header
+            mdl-layout--fixed-tabs">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+            <!-- Title -->
+            <span class="mdl-layout-title ">BUSТранзит</span>
+            <div class="mdl-layout-spacer"></div>
+            <nav class="mdl-navigation">
+                <div>
+                    @Html.Partial("_LoginPartial")
+
+                </div>
+            </nav>
+        </div>
+        <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+            @Html.ActionLink("Главная", "Index", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+            @Html.ActionLink("Транспорт", "Bus", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+            <a href="#tab-3" class="mdl-layout__tab mdl-color--white mdl-color-text--blue is-active">Рейсы</a>
+            @if (User.IsInRole("admin"))
+            {@Html.ActionLink("Сотрудники и роли", "Employee", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue " })}
+                @Html.ActionLink("О компании", "Company", "Home", null, new { @class = "mdl-layout__tab mdl-color--white mdl-color-text--blue" })
+</div>
+    </header>
+
+    <main class="mdl-layout__content">
+        <section class="mdl-layout__tab-panel is-active" id="tab-3">
+
+            <div class="page-content">
+                <div class="container">
+                    <center>
+                        <h2><span>Рейсы</span></h2>
+                        @if (User.IsInRole("operator"))
+                        {
+                            <hr />
+                            <p>
+                                @Html.ActionLink("Создать новый маршрут", "Create", null, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" })
+                            </p>
+                        }
+                        @if (User.IsInRole("admin"))
+                        {
+                            <hr />
+                            <p>
+                                @Html.ActionLink("Редактирование маршрутов", "Index","Trips", null, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" })
+                            </p>
+                        }
+                        @if (!User.IsInRole("driver")) { 
+                        <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                            <thead>
+                                <tr>
+                                    <th class="mdl-data-table__cell--non-numeric" />
+                                    <th>
+                                        <center>
+                                            Выезд
+                                        </center>
+                                    </th>
+                                    <th>
+                                        <center>
+                                            Откуда
+                                        </center>
+                                    </th>
+                                    <th>
+                                        <center>
+                                            Куда
+                                        </center>
+                                    </th>
+                                    <th>
+                                        <center>
+                                            В пути
+                                        </center>
+                                    </th>
+                                    <th>
+                                        <center>
+                                            Автобус
+                                        </center>
+                                    </th>
+
+                                    <th>
+                                        Осталось мест
+                                    </th>
+                                    <th>
+                                        <center>
+                                            Цена
+                                        </center>
+                                    </th>
+                                    @if (User.IsInRole("operator"))
+                                    {
+                                    <th>
+                                        Водитель
+                                    </th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td class="mdl-data-table__cell--non-numeric">
+                                            <img src="@Html.DisplayFor(modelItem => item.Bus1.Preview)" width="90" height="65">
+                                        </td>
+                                        <td>                               
+                                            @Html.DisplayFor(modelItem => item.DateTime)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Trip1.begin)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Trip1.end)
+                                        </td>
+                                        <td>
+                                            <center>
+                                                @Html.DisplayFor(modelItem => item.Trip1.length)
+                                                км
+                                                <br />
+                                                @Html.DisplayFor(modelItem => item.Trip1.time)
+                                                ч
+                                            </center>
+                                        </td>
+                                        <td>
+                                            <center>
+                                                @Html.DisplayFor(modelItem => item.Bus1.Model)
+                                            </center>
+                                        </td>
+                                        <td>
+                                            <center>
+                                                @Html.DisplayFor(modelItem => item.Free_paces)
+                                            </center>
+                                        </td>
+                                        <td>
+                                            <center>
+                                                @Html.DisplayFor(modelItem => item.Price_place)
+                                                P
+                                            </center>
+                                        </td>
+                                        @if (User.IsInRole("operator"))
+                                        {
+                                        <td>
+                                            <center>
+                                                @Html.DisplayFor(modelItem => item.AspNetUser.Name)
+                                            </center>
+                                        </td>
+                                        }
+
+
+                                        <td>
+                                            
+                                            @if (User.IsInRole("user"))
+                                            {                                            
+                                                @Html.ActionLink("Купить", "Details", new { id = item.Id }, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" })
+                                            }
+                                            @if (User.IsInRole("operator"))
+                                            {
+                                                @Html.ActionLink("Изменить", "Edit", new { id = item.Id }, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" })
+                                                @Html.ActionLink("Удалить", "Delete", new { id = item.Id }, new { @class = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" })
+                                            }
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        }
+                        else
+                        {
+                            <h5>Ваши выезды</h5>
+                            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                                <thead>
+                                    <tr>
+                                        <th class="mdl-data-table__cell--non-numeric" />
+                                        <th>
+                                            <center>
+                                                Выезд
+                                            </center>
+                                        </th>
+                                        <th>
+                                            <center>
+                                                Откуда
+                                            </center>
+                                        </th>
+                                        <th>
+                                            <center>
+                                                Куда
+                                            </center>
+                                        </th>
+                                        <th>
+                                            <center>
+                                                В пути
+                                            </center>
+                                        </th>
+                                        <th>
+                                            <center>
+                                                Автобус
+                                            </center>
+                                        </th>
+
+                                        <th>
+                                            Осталось мест
+                                        </th>
+                                        <th>
+                                            <center>
+                                                Цена
+                                            </center>
+                                        </th>                                      
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var item in Model)
+                                    {
+                                        if (item.Driver.Equals(User.Identity.GetUserId())) { 
+                                        <tr>
+                                            <td class="mdl-data-table__cell--non-numeric">
+                                                <img src="@Html.DisplayFor(modelItem => item.Bus1.Preview)" width="90" height="65">
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.DateTime)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Trip1.begin)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Trip1.end)
+                                            </td>
+                                            <td>
+                                                <center>
+                                                    @Html.DisplayFor(modelItem => item.Trip1.length)
+                                                    км
+                                                    <br />
+                                                    @Html.DisplayFor(modelItem => item.Trip1.time)
+                                                    ч
+                                                </center>
+                                            </td>
+                                            <td>
+                                                <center>
+                                                    @Html.DisplayFor(modelItem => item.Bus1.Model)
+                                                </center>
+                                            </td>
+                                            <td>
+                                                <center>
+                                                    @Html.DisplayFor(modelItem => item.Free_paces)
+                                                </center>
+                                            </td>
+                                            <td>
+                                                <center>
+                                                    @Html.DisplayFor(modelItem => item.Price_place)
+                                                    P
+                                                </center>
+                                            </td>                                           
+                                        </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                                    
+                        }
+
+                        <br />                                               
+                    </center>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
